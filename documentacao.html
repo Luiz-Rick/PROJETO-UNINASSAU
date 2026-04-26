@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação - Sistema de Autenticação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: #f8f9fa;
+            padding: 0;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            text-decoration: none;
+            color: #333;
+            text-align: center;
+            border-right: 1px solid #ddd;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        nav a:last-child {
+            border-right: none;
+        }
+
+        nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        nav a.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .step {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .code-block code {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .code-block code:last-child {
+            margin-bottom: 0;
+        }
+
+        .file-tree {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+        }
+
+        .file-tree .folder {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .file-tree .file {
+            color: #764ba2;
+            margin-left: 20px;
+        }
+
+        .checklist {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+        }
+
+        .checklist li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            color: #0c5460;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-left: 4px solid #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            color: #856404;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-left: 4px solid #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            color: #155724;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        footer {
+            background: #2d2d2d;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            nav {
+                flex-direction: column;
+            }
+
+            nav a {
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            nav a:last-child {
+                border-bottom: none;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍕 Sistema de Autenticação</h1>
+            <p>Documentação Completa - Pizzaria da Orla</p>
+        </header>
+
+        <nav>
+            <a onclick="mostrarSecao(0)" class="nav-link active">Início</a>
+            <a onclick="mostrarSecao(1)" class="nav-link">Instalação</a>
+            <a onclick="mostrarSecao(2)" class="nav-link">Uso</a>
+            <a onclick="mostrarSecao(3)" class="nav-link">API</a>
+            <a onclick="mostrarSecao(4)" class="nav-link">Arquivos</a>
+            <a onclick="mostrarSecao(5)" class="nav-link">FAQ</a>
+        </nav>
+
+        <div class="content">
+            <!-- SEÇÃO 1: INÍCIO -->
+            <div class="section active" id="secao-0">
+                <h2>🚀 Bem-vindo!</h2>
+                
+                <p>Este é um sistema completo de autenticação de usuários para a Pizzaria da Orla, desenvolvido em PHP e JavaScript.</p>
+
+                <h3>O que o sistema oferece?</h3>
+                <ul class="checklist">
+                    <li>Cadastro de novos usuários</li>
+                    <li>Sistema de login seguro</li>
+                    <li>Armazenamento de dados pessoais</li>
+                    <li>Exibição de perfil do usuário logado</li>
+                    <li>API RESTful completa</li>
+                    <li>Interface de teste integrada</li>
+                </ul>
+
+                <h3>Características</h3>
+                <ul class="checklist">
+                    <li>✅ Sem necessidade de MySQL (usa JSON)</li>
+                    <li>✅ Fácil de instalar e usar</li>
+                    <li>✅ Segurança básica implementada</li>
+                    <li>✅ Documentação completa</li>
+                    <li>✅ Interface de teste incluída</li>
+                </ul>
+
+                <div class="success-box">
+                    <strong>💡 Dica:</strong> Se esta é sua primeira vez, comece pela aba "Instalação"
+                </div>
+            </div>
+
+            <!-- SEÇÃO 2: INSTALAÇÃO -->
+            <div class="section" id="secao-1">
+                <h2>⚙️ Instalação e Configuração</h2>
+
+                <h3>Pré-requisitos</h3>
+                <ul>
+                    <li>XAMPP instalado (Apache + PHP)</li>
+                    <li>Navegador web atualizado</li>
+                    <li>Pasta do projeto no htdocs</li>
+                </ul>
+
+                <h3>Passo 1: Preparar o Projeto</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Copie a pasta do projeto para:</strong>
+                    <div class="code-block">
+                        <code>C:\xampp\htdocs\TEMPLATE-RestaurantePizza\</code>
+                    </div>
+                </div>
+
+                <h3>Passo 2: Iniciar o XAMPP</h3>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Abra o XAMPP Control Panel e:</strong>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Clique em "Start" ao lado de Apache</li>
+                        <li>Espere aparecer "Running" em verde</li>
+                    </ul>
+                </div>
+
+                <h3>Passo 3: Verificar Instalação</h3>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Abra seu navegador e acesse:</strong>
+                    <div class="code-block">
+                        <code>http://localhost/TEMPLATE-RestaurantePizza/</code>
+                    </div>
+                </div>
+
+                <h3>Passo 4: Testar a API</h3>
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Clique no link de teste:</strong>
+                    <div class="code-block">
+                        <code>http://localhost/TEMPLATE-RestaurantePizza/teste_api.html</code>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Sucesso!</strong> Se tudo funcionou, o sistema está pronto para usar.
+                </div>
+            </div>
+
+            <!-- SEÇÃO 3: USO -->
+            <div class="section" id="secao-2">
+                <h2>📱 Como Usar</h2>
+
+                <h3>Fluxo do Usuário</h3>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Acesse a página de Cadastro</strong>
+                    <p>O usuário preenche o formulário com seus dados pessoais e cria uma senha</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Dados são salvos</strong>
+                    <p>Os dados são validados no JavaScript e enviados para a API PHP, que salva em JSON</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Acesse o Login</strong>
+                    <p>Digite seu usuário e senha criados no cadastro</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Veja seu Perfil</strong>
+                    <p>A página logado.html exibe todas as suas informações</p>
+                </div>
+
+                <h3>Dados do Formulário</h3>
+                <p>O sistema solicita os seguintes dados:</p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo</th>
+                            <th>Obrigatório</th>
+                            <th>Exemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nome Completo</td>
+                            <td>Texto</td>
+                            <td>Sim</td>
+                            <td>João Silva</td>
+                        </tr>
+                        <tr>
+                            <td>Nome de Usuário</td>
+                            <td>Texto</td>
+                            <td>Sim</td>
+                            <td>joao.silva</td>
+                        </tr>
+                        <tr>
+                            <td>Telefone</td>
+                            <td>Telefone</td>
+                            <td>Sim</td>
+                            <td>(83) 98888-8888</td>
+                        </tr>
+                        <tr>
+                            <td>Endereço</td>
+                            <td>Texto</td>
+                            <td>Sim</td>
+                            <td>Rua das Flores</td>
+                        </tr>
+                        <tr>
+                            <td>Número</td>
+                            <td>Texto</td>
+                            <td>Sim</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>Cidade</td>
+                            <td>Texto</td>
+                            <td>Sim</td>
+                            <td>João Pessoa</td>
+                        </tr>
+                        <tr>
+                            <td>Estado</td>
+                            <td>Texto</td>
+                            <td>Sim</td>
+                            <td>PB</td>
+                        </tr>
+                        <tr>
+                            <td>CEP</td>
+                            <td>Texto</td>
+                            <td>Sim</td>
+                            <td>58045-080</td>
+                        </tr>
+                        <tr>
+                            <td>Senha</td>
+                            <td>Senha</td>
+                            <td>Sim</td>
+                            <td>min. 6 caracteres</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SEÇÃO 4: API -->
+            <div class="section" id="secao-3">
+                <h2>🔌 Endpoints da API</h2>
+
+                <h3>1. Cadastrar Usuário</h3>
+                <div class="code-block">
+                    <code><strong>POST</strong> /api_usuarios.php?acao=cadastrar</code>
+                    <br>
+                    <code><strong>Body:</strong></code>
+                    <code>{</code>
+                    <code>  "nomeCompleto": "João Silva",</code>
+                    <code>  "usuario": "joao.silva",</code>
+                    <code>  "telefone": "(83) 98888-8888",</code>
+                    <code>  "endereco": "Rua das Flores",</code>
+                    <code>  "numero": "123",</code>
+                    <code>  "cidade": "João Pessoa",</code>
+                    <code>  "estado": "PB",</code>
+                    <code>  "cep": "58045-080",</code>
+                    <code>  "senha": "senha123"</code>
+                    <code>}</code>
+                </div>
+
+                <h3>2. Fazer Login</h3>
+                <div class="code-block">
+                    <code><strong>POST</strong> /api_usuarios.php?acao=login</code>
+                    <br>
+                    <code><strong>Body:</strong></code>
+                    <code>{</code>
+                    <code>  "usuario": "joao.silva",</code>
+                    <code>  "senha": "senha123"</code>
+                    <code>}</code>
+                </div>
+
+                <h3>3. Obter Dados do Usuário</h3>
+                <div class="code-block">
+                    <code><strong>GET</strong> /api_usuarios.php?acao=obter&id=1</code>
+                </div>
+
+                <h3>4. Listar Todos os Usuários</h3>
+                <div class="code-block">
+                    <code><strong>GET</strong> /api_usuarios.php?acao=listar</code>
+                </div>
+
+                <h3>5. Atualizar Perfil</h3>
+                <div class="code-block">
+                    <code><strong>PUT</strong> /api_usuarios.php?acao=atualizar</code>
+                    <br>
+                    <code><strong>Body:</strong></code>
+                    <code>{</code>
+                    <code>  "id": 1,</code>
+                    <code>  "telefone": "(83) 99999-9999",</code>
+                    <code>  "cidade": "Recife"</code>
+                    <code>}</code>
+                </div>
+
+                <h3>6. Deletar Usuário</h3>
+                <div class="code-block">
+                    <code><strong>DELETE</strong> /api_usuarios.php?acao=deletar</code>
+                    <br>
+                    <code><strong>Body:</strong></code>
+                    <code>{</code>
+                    <code>  "id": 1</code>
+                    <code>}</code>
+                </div>
+
+                <h3>7. Verificar Status</h3>
+                <div class="code-block">
+                    <code><strong>GET</strong> /api_usuarios.php?acao=status</code>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Dica:</strong> Use a página teste_api.html para testar todos os endpoints visualmente!
+                </div>
+            </div>
+
+            <!-- SEÇÃO 5: ARQUIVOS -->
+            <div class="section" id="secao-4">
+                <h2>📁 Estrutura de Arquivos</h2>
+
+                <h3>Arquivos Principais</h3>
+                <div class="file-tree">
+                    <div class="folder">📦 TEMPLATE-RestaurantePizza/</div>
+                    <div class="file">├─ <strong>api_usuarios.php</strong> - API principal (JSON)</div>
+                    <div class="file">├─ <strong>api_client.js</strong> - Cliente JavaScript</div>
+                    <div class="file">├─ <strong>teste_api.html</strong> - Interface de teste</div>
+                    <div class="file">├─ <strong>cadastro.html</strong> - Página de cadastro</div>
+                    <div class="file">├─ <strong>login.html</strong> - Página de login</div>
+                    <div class="file">├─ <strong>logado.html</strong> - Página de perfil</div>
+                    <div class="file">├─ <strong>usuarios.json</strong> - Banco de dados (criado automaticamente)</div>
+                    <div class="file">├─ README_API.txt - Documentação</div>
+                    <div class="file">├─ GUIA_RAPIDO.txt - Guia rápido</div>
+                    <div class="file">├─ config_db.php - Config. MySQL (opcional)</div>
+                    <div class="file">├─ criar_banco.sql - Script SQL (opcional)</div>
+                    <div class="file">└─ api_usuarios_mysql.php - API MySQL (opcional)</div>
+                </div>
+
+                <h3>Descrição dos Arquivos</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Arquivo</th>
+                            <th>Descrição</th>
+                            <th>Tamanho</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>api_usuarios.php</strong></td>
+                            <td>API principal que processa todas as requisições</td>
+                            <td>~8 KB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>api_client.js</strong></td>
+                            <td>Integra a API com o frontend HTML</td>
+                            <td>~6 KB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>teste_api.html</strong></td>
+                            <td>Interface visual para testar endpoints</td>
+                            <td>~12 KB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>usuarios.json</strong></td>
+                            <td>Armazena dados dos usuários (JSON)</td>
+                            <td>Dinâmico</td>
+                        </tr>
+                        <tr>
+                            <td><strong>config_db.php</strong></td>
+                            <td>Configuração MySQL (opcional)</td>
+                            <td>~2 KB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>api_usuarios_mysql.php</strong></td>
+                            <td>API alternativa para MySQL</td>
+                            <td>~9 KB</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SEÇÃO 6: FAQ -->
+            <div class="section" id="secao-5">
+                <h2>❓ Perguntas Frequentes</h2>
+
+                <h3>P: Preciso de MySQL?</h3>
+                <p><strong>R:</strong> Não! O sistema usa JSON por padrão, que é mais simples. MySQL é opcional para versões futuras.</p>
+
+                <h3>P: Como resetar os dados?</h3>
+                <p><strong>R:</strong> Delete o arquivo <code>usuarios.json</code>. Ele será recriado automaticamente na próxima requisição.</p>
+
+                <h3>P: Posso acessar do celular?</h3>
+                <p><strong>R:</strong> Sim! Substitua "localhost" pelo IP local do computador. Por exemplo: <code>http://192.168.1.100/...</code></p>
+
+                <h3>P: Minhas senhas estão seguras?</h3>
+                <p><strong>R:</strong> As senhas são criptografadas com MD5. Para produção, recomenda-se usar bcrypt ou Argon2.</p>
+
+                <h3>P: Posso modificar os campos do cadastro?</h3>
+                <p><strong>R:</strong> Sim! Modifique <code>api_usuarios.php</code> e <code>api_client.js</code> para adicionar/remover campos.</p>
+
+                <h3>P: Como faço para adicionar um novo usuário manualmente?</h3>
+                <p><strong>R:</strong> Use a página <code>teste_api.html</code> para cadastrar usando a interface visual.</p>
+
+                <h3>P: O que fazer se receber erro CORS?</h3>
+                <p><strong>R:</strong> Certifique-se de acessar via <code>http://localhost/</code> e não abrindo os arquivos HTML diretamente.</p>
+
+                <h3>P: Como fazer logout?</h3>
+                <p><strong>R:</strong> Clique em "Sair" na página logado.html. Seus dados serão removidos da sessão.</p>
+
+                <div class="success-box">
+                    <strong>📞 Precisa de ajuda?</strong> Verifique o console do navegador (F12) para ver mensagens de erro detalhadas.
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🍕 Sistema de Autenticação - Pizzaria da Orla | Desenvolvido em 2024</p>
+            <p>API com PHP | Banco de dados JSON | Interface JavaScript</p>
+        </footer>
+    </div>
+
+    <script>
+        function mostrarSecao(index) {
+            // Ocultar todas as seções
+            const secoes = document.querySelectorAll('.section');
+            secoes.forEach(s => s.classList.remove('active'));
+
+            // Remover classe active de todos os links
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(l => l.classList.remove('active'));
+
+            // Mostrar seção selecionada
+            document.getElementById(`secao-${index}`).classList.add('active');
+            document.querySelectorAll('.nav-link')[index].classList.add('active');
+
+            // Scroll para o topo
+            document.querySelector('.content').scrollTop = 0;
+        }
+    </script>
+</body>
+</html>
